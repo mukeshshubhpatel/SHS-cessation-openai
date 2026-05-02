@@ -1,0 +1,5 @@
+{
+  "extraPaths": [".", "../legacy/shs_chatbot_pinecone"],
+  "reportMissingImports": "none",
+  "reportMissingModuleSource": "none"
+}

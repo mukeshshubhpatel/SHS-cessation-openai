@@ -1,0 +1,17 @@
+.DS_Store
+
+.venv/
+backend/.env
+backend/__pycache__/
+backend/core/__pycache__/
+legacy/**/__pycache__/
+
+frontend/node_modules/
+frontend/dist/
+
+backend/logs/*.log
+backend/logs/*.sqlite
+backend/logs/*.csv
+.env
+node_modules/
+dist/
