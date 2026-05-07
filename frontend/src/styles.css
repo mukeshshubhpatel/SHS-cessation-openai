@@ -52,14 +52,29 @@ body { margin: 0; font-family: "Sohne", "Segoe UI", system-ui, sans-serif; backg
 }
 
 .history { display: grid; gap: 8px; max-height: 58dvh; overflow: auto; }
+.history-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 34px;
+  gap: 6px;
+  align-items: center;
+}
 .history-item.active { background: var(--panel-soft); border-color: transparent; }
+.history-delete-btn {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  height: 40px;
+  cursor: pointer;
+}
+.history-delete-btn:hover { color: var(--text); background: var(--panel-soft); }
 .sidebar-bottom { font-size: 0.8rem; color: var(--muted); display: grid; gap: 6px; }
 
-.chat-panel { background: var(--panel); display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+.chat-panel { background: var(--panel); display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-height: 0; height: 100dvh; }
 .chat-header { padding: 16px 28px; border-bottom: 1px solid var(--border); }
 .chat-header h1 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--muted); }
 
-.chat { overflow: auto; padding: 8px 0 18px; display: grid; gap: 2px; }
+.chat { overflow: auto; min-height: 0; padding: 8px 0 18px; display: grid; gap: 2px; }
 .empty-state { color: var(--muted); margin: 24px auto 0; width: min(820px, calc(100% - 24px)); }
 .row {
   display: grid;

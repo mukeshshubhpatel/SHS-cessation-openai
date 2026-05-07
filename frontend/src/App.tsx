@@ -102,6 +102,40 @@ export function App() {
     setQuery("");
   }
 
+  function clearActiveChat() {
+    if (!activeSessionId) return;
+    setSessions((prev) =>
+      prev.map((s) => (s.id === activeSessionId ? { ...s, messages: [], title: "New chat", updatedAt: Date.now() } : s))
+    );
+    setStatus("Ready");
+  }
+
+  function deleteChat(sessionId: string) {
+    setSessions((prev) => {
+      const remaining = prev.filter((s) => s.id !== sessionId);
+      if (remaining.length === 0) {
+        const id = newSessionId();
+        const next: ChatSession = { id, title: "New chat", messages: [], updatedAt: Date.now() };
+        setActiveSessionId(id);
+        return [next];
+      }
+      if (sessionId === activeSessionId) {
+        const sorted = [...remaining].sort((a, b) => b.updatedAt - a.updatedAt);
+        setActiveSessionId(sorted[0].id);
+      }
+      return remaining;
+    });
+    setStatus("Ready");
+  }
+
+  function deleteAllChats() {
+    const id = newSessionId();
+    const next: ChatSession = { id, title: "New chat", messages: [], updatedAt: Date.now() };
+    setSessions([next]);
+    setActiveSessionId(id);
+    setStatus("Ready");
+  }
+
   function updateActiveMessages(nextMessages: Msg[]) {
     setSessions((prev) =>
       prev.map((s) => {
@@ -195,6 +229,8 @@ export function App() {
       <aside className="sidebar">
         <div className="sidebar-top">
           <button type="button" className="new-chat-btn" onClick={createNewChat}>+ New chat</button>
+          <button type="button" className="theme-btn" onClick={deleteAllChats}>Delete all chats</button>
+          <button type="button" className="theme-btn" onClick={clearActiveChat}>Clear chat</button>
           <button type="button" className="theme-btn" onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}>
             Theme: {theme === "dark" ? "Dark" : "Light"}
           </button>
@@ -203,9 +239,19 @@ export function App() {
               .slice()
               .sort((a, b) => b.updatedAt - a.updatedAt)
               .map((s) => (
-                <button key={s.id} type="button" className={`history-item ${s.id === activeSessionId ? "active" : ""}`} onClick={() => setActiveSessionId(s.id)}>
-                  {s.title || "New chat"}
-                </button>
+                <div key={s.id} className={`history-row ${s.id === activeSessionId ? "active" : ""}`}>
+                  <button type="button" className={`history-item ${s.id === activeSessionId ? "active" : ""}`} onClick={() => setActiveSessionId(s.id)}>
+                    {s.title || "New chat"}
+                  </button>
+                  <button
+                    type="button"
+                    className="history-delete-btn"
+                    aria-label={`Delete chat ${s.title || "New chat"}`}
+                    onClick={() => deleteChat(s.id)}
+                  >
+                    x
+                  </button>
+                </div>
               ))}
           </div>
         </div>
